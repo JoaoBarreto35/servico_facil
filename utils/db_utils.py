@@ -200,3 +200,52 @@ def delete_order_item(item_id):
 
     conn.commit()
     conn.close()
+
+
+#CRUD accounts
+def insert_account(name, amount, due_date, recurring, paid):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO accounts (name, amount, due_date, recurring, paid)
+        VALUES (?, ?, ?, ?, ?)
+    """, (name, amount, due_date, recurring, paid))
+
+    conn.commit()
+    conn.close()
+
+def get_all_accounts():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, name, amount, due_date, recurring, paid
+        FROM accounts
+    """)
+    accounts = cursor.fetchall()
+
+    conn.close()
+    return accounts
+
+def update_account(account_id, name, amount, due_date, recurring, paid):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE accounts
+        SET name = ?, amount = ?, due_date = ?, recurring = ?, paid = ?
+        WHERE id = ?
+    """, (name, amount, due_date, recurring, paid, account_id))
+
+    conn.commit()
+    conn.close()
+
+def delete_account(account_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM accounts WHERE id = ?", (account_id,))
+
+    conn.commit()
+    conn.close()
