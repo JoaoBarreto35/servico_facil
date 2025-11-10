@@ -149,3 +149,54 @@ def delete_order(order_id):
 
     conn.commit()
     conn.close()
+
+
+#CRUD Order_items
+def insert_order_item(order_id, item_id, quantity, unit_price):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO order_items (order_id, item_id, quantity, unit_price)
+        VALUES (?, ?, ?, ?)
+    """, (order_id, item_id, quantity, unit_price))
+
+    conn.commit()
+    conn.close()
+
+
+def get_order_items(order_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+                   SELECT id, item_id, quantity, unit_price
+                   FROM order_items
+                   WHERE order_id = ?
+                   """, (order_id,))
+
+    items = cursor.fetchall()
+    conn.close()
+    return items
+
+def update_order_item(item_id, quantity, unit_price):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE order_items
+        SET quantity = ?, unit_price = ?
+        WHERE id = ?
+    """, (quantity, unit_price, item_id))
+
+    conn.commit()
+    conn.close()
+
+def delete_order_item(item_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM order_items WHERE id = ?", (item_id,))
+
+    conn.commit()
+    conn.close()
