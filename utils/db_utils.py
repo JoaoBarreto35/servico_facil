@@ -28,3 +28,25 @@ def get_all_clients():
 
     conn.close()
     return clients
+
+def update_client(client_id, name, phone, address, email):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE clients
+        SET name = ?, phone = ?, address = ?, email = ?
+        WHERE id = ?
+    """, (name, phone, address, email, client_id))
+
+    conn.commit()
+    conn.close()
+
+def delete_client(client_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM clients WHERE id = ?", (client_id,))
+
+    conn.commit()
+    conn.close()
