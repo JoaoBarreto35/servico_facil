@@ -1,16 +1,37 @@
-# This is a sample Python script.
+import tkinter as tk
+from tkinter import ttk
+from views.client_view import build_client_tab
+# from views.item_view import build_item_tab
+# from views.order_view import build_order_tab
+# from views.account_view import build_account_tab
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Create the main application window
+root = tk.Tk()
+root.title("🔧 Sistema de Ordens de Serviço")
+root.geometry("800x600")
+root.configure(bg="#f0f0f0")
 
+# Create a Notebook (tabbed interface)
+notebook = ttk.Notebook(root)
+notebook.pack(fill="both", expand=True)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Create frames for each tab
+tab_clientes = tk.Frame(notebook, bg="#f9f9f9")
+tab_itens = tk.Frame(notebook, bg="#f9f9f9")
+tab_ordens = tk.Frame(notebook, bg="#f9f9f9")
+tab_contas = tk.Frame(notebook, bg="#f9f9f9")
 
+# Add tabs to the notebook
+notebook.add(tab_clientes, text="👤 Clientes")
+notebook.add(tab_itens, text="🧾 Itens de Serviço")
+notebook.add(tab_ordens, text="📦 Ordens de Serviço")
+notebook.add(tab_contas, text="💰 Contas a Pagar")
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Build each tab interface
+build_client_tab(tab_clientes)
+# build_item_tab(tab_itens)
+# build_order_tab(tab_ordens)
+# build_account_tab(tab_contas)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Start the main loop
+root.mainloop()
