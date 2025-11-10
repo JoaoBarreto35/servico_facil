@@ -100,3 +100,52 @@ def delete_item(item_id):
 
     conn.commit()
     conn.close()
+
+
+#CRUD Orders
+def insert_order(client_id, date, status, fulfillment_method, notes, completion_date=None):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO orders (client_id, date, status, fulfillment_method, notes, completion_date)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (client_id, date, status, fulfillment_method, notes, completion_date))
+
+    conn.commit()
+    conn.close()
+
+def get_all_orders():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, client_id, date, status, fulfillment_method, notes, completion_date
+        FROM orders
+    """)
+    orders = cursor.fetchall()
+
+    conn.close()
+    return orders
+
+def update_order(order_id, client_id, date, status, fulfillment_method, notes, completion_date):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE orders
+        SET client_id = ?, date = ?, status = ?, fulfillment_method = ?, notes = ?, completion_date = ?
+        WHERE id = ?
+    """, (client_id, date, status, fulfillment_method, notes, completion_date, order_id))
+
+    conn.commit()
+    conn.close()
+
+def delete_order(order_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM orders WHERE id = ?", (order_id,))
+
+    conn.commit()
+    conn.close()
