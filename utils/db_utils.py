@@ -6,3 +6,15 @@ def connect_db():
     db_path = os.path.join(base_dir, "../db/servico_facil.db")
     conn = sqlite3.connect(db_path)
     return conn
+
+def insert_client(name, phone, address, email):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO clients (name, phone, address, email)
+        VALUES (?, ?, ?, ?)
+    """, (name, phone, address, email))
+
+    conn.commit()
+    conn.close()
