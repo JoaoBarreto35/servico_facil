@@ -7,6 +7,9 @@ def connect_db():
     conn = sqlite3.connect(db_path)
     return conn
 
+
+
+#CRUD Clients
 def insert_client(name, phone, address, email):
     conn = connect_db()
     cursor = conn.cursor()
@@ -47,6 +50,53 @@ def delete_client(client_id):
     cursor = conn.cursor()
 
     cursor.execute("DELETE FROM clients WHERE id = ?", (client_id,))
+
+    conn.commit()
+    conn.close()
+
+
+#CRUD Service items
+
+def insert_item(name, price, notes):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO service_items (name, price, notes)
+        VALUES (?, ?, ?)
+    """, (name, price, notes))
+
+    conn.commit()
+    conn.close()
+
+def get_all_items():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id, name, price, notes FROM service_items")
+    items = cursor.fetchall()
+
+    conn.close()
+    return items
+
+def update_item(item_id, name, price, notes):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE service_items
+        SET name = ?, price = ?, notes = ?
+        WHERE id = ?
+    """, (name, price, notes, item_id))
+
+    conn.commit()
+    conn.close()
+
+def delete_item(item_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM service_items WHERE id = ?", (item_id,))
 
     conn.commit()
     conn.close()
