@@ -18,3 +18,13 @@ def insert_client(name, phone, address, email):
 
     conn.commit()
     conn.close()
+
+def get_all_clients():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id, name, phone, address, email FROM clients")
+    clients = cursor.fetchall()
+
+    conn.close()
+    return clients

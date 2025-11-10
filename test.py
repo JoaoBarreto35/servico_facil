@@ -1,10 +1,6 @@
-from utils.db_utils import insert_client
+from utils.db_utils import get_all_clients
 
-insert_client(
-    name="João Barreto",
-    phone="(12) 99999-9999",
-    address="Rua das Ferramentas, 123",
-    email="joao@example.com"
-)
+clients = get_all_clients()
 
-print("Cliente inserido com sucesso!")
+for client in clients:
+    print(f"ID: {client[0]} | Name: {client[1]} | Phone: {client[2]}")
