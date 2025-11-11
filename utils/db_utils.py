@@ -108,12 +108,15 @@ def insert_order(client_id, date, status, fulfillment_method, notes, completion_
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO orders (client_id, date, status, fulfillment_method, notes, completion_date)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (client_id, date, status, fulfillment_method, notes, completion_date))
+                   INSERT INTO orders (client_id, date, status, fulfillment_method, notes, completion_date)
+                   VALUES (?, ?, ?, ?, ?, ?)
+                   """, (client_id, date, status, fulfillment_method, notes, completion_date))
+
+    order_id = cursor.lastrowid  # 🔥 IMPORTANTE: pegar o ID da ordem inserida
 
     conn.commit()
     conn.close()
+    return order_id  # 🔥 RETORNAR o ID
 
 def get_all_orders():
     conn = connect_db()
@@ -128,7 +131,7 @@ def get_all_orders():
     conn.close()
     return orders
 
-def update_order(order_id, client_id, date, status, fulfillment_method, notes, completion_date):
+def update_order(order_id, client_id, date, status, fulfillment_method, notes, completion_date=None):
     conn = connect_db()
     cursor = conn.cursor()
 
@@ -156,6 +159,8 @@ def insert_order_item(order_id, item_id, quantity, unit_price):
     conn = connect_db()
     cursor = conn.cursor()
 
+    print(f"INSERT: order_id={order_id}, item_id={item_id}, quantity={quantity}, unit_price={unit_price}")  # Debug
+
     cursor.execute("""
         INSERT INTO order_items (order_id, item_id, quantity, unit_price)
         VALUES (?, ?, ?, ?)
@@ -163,6 +168,7 @@ def insert_order_item(order_id, item_id, quantity, unit_price):
 
     conn.commit()
     conn.close()
+    print("Item inserido com sucesso!")  # Debug
 
 
 def get_order_items(order_id):
@@ -176,6 +182,12 @@ def get_order_items(order_id):
                    """, (order_id,))
 
     items = cursor.fetchall()
+
+    # Debug: verificar o que está sendo retornado
+    print(f"=== GET_ORDER_ITEMS para ordem {order_id} ===")
+    for item in items:
+        print(f"ID: {item[0]}, Item_ID: {item[1]}, Qtd: {item[2]}, Preço: {item[3]}")
+
     conn.close()
     return items
 
